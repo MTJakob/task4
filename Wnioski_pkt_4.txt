@@ -1,0 +1,15 @@
+Każdy z przeprowadzonych testów jest uzupełniającym się testem bezpieczeństwa i sprawdza aplikację pod innym kątem.
+
+SCA (Software Composition Analysis) analizuje zależności aplikacji np. biblioteki i sprawdza znane podatności w tych zewnętrznych komponentach. Jego celem jest dostarczenie programiście informacji czy wykorzystana zależność jest bezpieczna i jeśli znajdują się w niej jakieś podatności to pozwala podjąć decyzje czy może ona zostać wykorzystana w tworzonej aplikacji, czy istnieje aktualizacja lub ewentualnie czy podatna biblioteka powinna być zmieniona.
+
+SAST (Static Application Security Testing) analizuje kod źródłowy napisanej aplikacji. Pozwala na wykrycie problemów w kodzie takich jak brak walidacji, użycie niebezpiecznych funkcji czy błędy logiczne np. 
+
+javascript.lang.security.audit.detect-non-literal-regexp.detect-non-literal-regexp
+          RegExp() called with a `property` function argument, this might allow an attacker to cause a Regular
+          Expression Denial-of-Service (ReDoS) within your application as RegExP blocks the main thread
+
+może być potencjalnym punktem atak. Jednak z poziomu działającej aplikacji nie było by to łatwe do wykrycia i wymagałoby testów penetracyjnych.
+
+Ostatnim automatycznym testem bezpieczeństwa było DAST (Dynamic Application Security Testing), które analizuje aplikację podczas działania. Sprawdzania interakcję pomiędzy komponentami i konfigurację środowiska. Jest w stanie wykryć np. brak nagłówków bezpieczeństwa (CSP) czy dynamiczne XSS. Przykładem wykrytym przez ZAP, ale nie wykrytym przez semgrep czy Trivy jest podatność: Content Security Policy (CSP) Header Not Set. Nie jest ona wykrywana przez statyczne analizatory ponieważ nagłówki CSP są ustawiane przez web server jak np. nginx, co może zostać dopiero podczas działania aplikacji. 
+
+Można więc wywnioskować, że każdy z przeprowadzonych testów ma swoje zastosowanie i sprawdza aplikację po innym kątem, co z kolei sprawia, że całościowe bezpieczeństwo aplikacji rośnie.
